@@ -2,6 +2,8 @@ import numpy as np
 from ortools.linear_solver import pywraplp
 from scipy.sparse import coo_matrix
 
+__all__ = ['lp_solver']
+
 
 def lp_solver(objective_function_vector, constraints_matrix, constraints_vector):
     '''
@@ -11,8 +13,8 @@ def lp_solver(objective_function_vector, constraints_matrix, constraints_vector)
             subject to  A.dot(x) <= b
     Where   x represents the vector of variables
             c are vector of coefficients    # objective_function_vector
-            A are matrix of coefficients    # constraint_matrix
-            b are vecotr of coefficients    # constraint_vector
+            A are matrix of coefficients    # constraints_matrix
+            b are vecotr of coefficients    # constraints_vector
     '''
     solver = pywraplp.Solver('lp_solver', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
 
@@ -44,14 +46,14 @@ def lp_test():
     Reference   http://www.vitutor.com/alg/linear_programming/example_programming.html
     Solve the following linear programming problem
         maximize    f(x,y) = 50x + 40y
-        subject to  2x+3y <= 1500
+        subject to  2x + 3y <= 1500
                     2x + y <= 1000
                     x >= 0 <=> -x <= 0
                     y >= 0 <=> -y <= 0
     '''
-    ofv = np.array([50, 40], dtype=np.float)
-    cm = np.array([[2, 3], [2, 1], [-1, 0], [0, -1]], dtype=np.float)
-    cv = np.array([1500, 1000, 0, 0])
+    ofv = np.array([50, 40], dtype=np.float)                            # objective_function_vector
+    cm = np.array([[2, 3], [2, 1], [-1, 0], [0, -1]], dtype=np.float)   # constraints_matrix
+    cv = np.array([1500, 1000, 0, 0])                                   # constraints_vector
 
     solution = lp_solver(ofv, coo_matrix(cm), cv)
     print(solution)
